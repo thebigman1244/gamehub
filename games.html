@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Games</title>
+</head>
+<body>
+  <h1>My Game Hub</h1>
+
+  <a href="games/snake/index.html">Play Snake</a><br>
+  <a href="games/pong/index.html">Play Pong</a><br>
+
+  <script>
+    if(sessionStorage.getItem("auth") !== "yes"){
+      window.location = "login.html";
+    }
+  </script>
+</body>
+</html>

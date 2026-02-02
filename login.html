@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+</head>
+<body>
+  <h2>Game Hub Login</h2>
+  <input type="password" id="pw" placeholder="Enter password">
+  <button onclick="check()">Enter</button>
+
+  <script>
+    const HASH = "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8"; 
+    // this hash = "password"
+
+    async function check() {
+      let pw = document.getElementById("pw").value;
+      let enc = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(pw));
+      let hash = Array.from(new Uint8Array(enc)).map(b=>b.toString(16).padStart(2,"0")).join("");
+
+      if (hash === HASH) {
+        sessionStorage.setItem("auth","yes");
+        window.location = "games.html";
+      } else {
+        alert("Wrong password");
+      }
+    }
+  </script>
+</body>
+</html>

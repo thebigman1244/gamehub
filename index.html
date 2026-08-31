@@ -1,28 +1,104 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Login</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Hub</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #101418;
+      --panel: #182129;
+      --text: #f3f7fb;
+      --muted: #a8b5c2;
+      --accent: #35d07f;
+      --accent-dark: #159957;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at top left, rgba(53, 208, 127, 0.14), transparent 32rem),
+        var(--bg);
+      color: var(--text);
+      font-family: Arial, sans-serif;
+    }
+
+    main {
+      width: min(92vw, 30rem);
+      padding: 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      background: var(--panel);
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+    }
+
+    h1 {
+      margin: 0 0 0.75rem;
+      font-size: 2rem;
+      line-height: 1.1;
+    }
+
+    p {
+      margin: 0 0 1.5rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    a.button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 3.25rem;
+      padding: 0 1.5rem;
+      border-radius: 8px;
+      background: linear-gradient(180deg, var(--accent), var(--accent-dark));
+      color: #04140b;
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 10px 24px rgba(21, 153, 87, 0.28);
+    }
+
+    a.button:focus-visible {
+      outline: 3px solid #ffffff;
+      outline-offset: 4px;
+    }
+  </style>
 </head>
 <body>
-  <h2>Game Hub Login</h2>
-  <input type="password" id="pw" placeholder="Enter password">
-  <button onclick="check()">Enter</button>
+  <main>
+    <h1>Game Hub</h1>
+    <p>Today's launch link is active. Older one-letter links keep working too.</p>
+    <a class="button" href="https://html-games-v2-cxz5.onrender.com/play.html">Open Game</a>
+  </main>
 
   <script>
-    const HASH = "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8"; 
-    // this hash = "password"
+    const CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const ROTATION_START = Date.UTC(2026, 0, 1);
+    const DAY_MS = 24 * 60 * 60 * 1000;
 
-    async function check() {
-      let pw = document.getElementById("pw").value;
-      let enc = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(pw));
-      let hash = Array.from(new Uint8Array(enc)).map(b=>b.toString(16).padStart(2,"0")).join("");
+    function getDailyPath(date = new Date()) {
+      const todayUtc = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+      const daysPassed = Math.max(0, Math.floor((todayUtc - ROTATION_START) / DAY_MS));
+      return "/" + CHARACTERS[daysPassed % CHARACTERS.length];
+    }
 
-      if (hash === HASH) {
-        sessionStorage.setItem("auth","yes");
-        window.location = "games.html";
-      } else {
-        alert("Wrong password");
-      }
+    const path = window.location.pathname.replace(/\/+$/, "") || "/";
+    const oneCharacterPath = /^\/[A-Za-z0-9]$/.test(path);
+
+    if (path === "/" || path === "/index.html") {
+      window.location.replace(getDailyPath());
+    } else if (!oneCharacterPath) {
+      window.history.replaceState(null, "", getDailyPath());
     }
   </script>
 </body>

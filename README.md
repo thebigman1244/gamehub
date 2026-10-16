@@ -20,4 +20,4 @@ python -m http.server 8000
 Then open http://localhost:8000.
 
 ## Hosting
-Use website such as cloudflare, or any static html hoster and it will give instant access to 410 games.
+Simply attach index.html into any static file hoster or use https://html-games-v2-cxz5.onrender.com/play.html. This brings you to a website with 410 games, all local HTML.

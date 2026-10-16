@@ -19,6 +19,5 @@ python -m http.server 8000
 
 Then open http://localhost:8000.
 
-## Notes
-
-The destination URL is currently hard-coded, and the rotating path is cosmetic rather than an access-control mechanism. Make sure any linked or hosted games are distributed with permission and comply with their original licenses and terms.
+## Hosting
+Use website such as cloudflare, or any static html hoster and it will give instant access to 410 games.
